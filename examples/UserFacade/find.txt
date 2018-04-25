@@ -1,0 +1,20 @@
+
+Example:
+
+$facade = new \EncryptServer\UserFacade();
+$response = $facade->find(["email" => $email, "login" => $login], ["count" => 1]);
+$data = $response->getResponse();
+$searchResult = $data["searchResult"];
+
+$ar = [
+   "total" => $searchResult->getTotal(),
+   "page" => $searchResult->getPage(),
+   "data" => []
+];
+
+while ($searchResult->valid())
+{
+    $ar["data"][] = $searchResult->current();
+    $searchResult->next();
+}
+
