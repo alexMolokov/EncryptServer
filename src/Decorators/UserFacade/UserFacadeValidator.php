@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Анастасия
- * Date: 09.04.2018
- * Time: 16:30
+ * @page UserFacadeValidator
  */
 
 namespace EncryptServer\Decorators\UserFacade;
@@ -16,6 +13,7 @@ use EncryptServer\Response\ErrorResponse;
 use EncryptServer\Response\Response;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Constraints;
+
 
 /**
  * @brief Wrapper for User Facade. Validate params before send UserFacade

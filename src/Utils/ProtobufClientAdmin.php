@@ -85,6 +85,8 @@ class ProtobufClientAdmin extends ProtobufClient
      */
     public function __construct($adminConfig = [])
     {
+        if(!isset($adminConfig["useStreamContext"])) $adminConfig["useStreamContext"] = true;
+
         parent::__construct($adminConfig["uri"], $adminConfig["useStreamContext"]);
         $params = ["domain","login","password","adminPassword"];
 
@@ -205,6 +207,28 @@ class ProtobufClientAdmin extends ProtobufClient
 
         $this->sendCmd($auth_send_credentials);
         $auth_result = $this->readCmd();
+
+        var_dump($auth_result);
+        var_dump([
+            'login' => $this->_login,
+            'domain' => $this->_domain,
+            'resource' => 'vipadmin',
+            'client_seed' => $clientSeed,
+            'digest' => $this->digest(
+                $this->_login,
+                $this->_password,
+                $this->_domain,
+                $clientSeed,
+                $auth_ask_credentials->getServerSeed()
+            ),
+            'client_version_from_ini' => 0,
+            'client_version_from_def' => 3005000,
+            'system_info' => json_encode(['application_instance' => "Encrypt Server API"]), //up to configs as Deployment ID
+            'resource_file_version' => 0,
+            'data_channel' => false
+        ]);
+
+
         if ($auth_result->getResult()->value() !== Protocol\Auth\auth_result\Result::Ok_VALUE)
         {
 
@@ -270,6 +294,6 @@ class ProtobufClientAdmin extends ProtobufClient
      */
     public function getExtraOp($name)
     {
-        return (isset(self::EXTRA_OP[$name]))? self::EXTRA_OP[$name]: null;
+        return (self::EXTRA_OP[$name] !== null)? self::EXTRA_OP[$name]: null;
     }
 }

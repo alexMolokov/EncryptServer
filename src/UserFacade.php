@@ -65,16 +65,18 @@ class UserFacade implements Interfaces\IUserInterface
      */
     public function add(Models\User $user)
     {
+
         $userCommand = Vipadmin\UserCommand::fromArray([
             'nickname' => $user->getNickname(),
             'email' => $user->getEmail(),
             'name1' => $user->getFirstName(),
-            'name2' => $user->getLastName(),
-            'name3' => $user->getMiddleName(),
+            'name2' => $user->getMiddleName(),
+            'name3' => $user->getLastName(),
             'password' => $this->_client->passwordHash($user->getLogin(), $user->getPassword()),
             'passwordHex' => $this->_client->passwordHashHex($user->getLogin(), $user->getPassword()),
             'blocked' => $user->isBlocked()
         ]);
+
 
         $add_user = Vipadmin\add_user::fromArray([
             'id' => $this->_client->getVipadminId(),
@@ -161,9 +163,10 @@ class UserFacade implements Interfaces\IUserInterface
             }
         }
 
-        if(!is_null($options["sort"]))
+        if(isset($options["sort"]))
         {
             $currentSort =  Search\Sort\AbstractSort::getSort($options["sort"]);
+
             if(!is_null($currentSort))
             {
                 $currentSort->add($CmdFind, $options["asc"]);
@@ -186,10 +189,10 @@ class UserFacade implements Interfaces\IUserInterface
                         "login" => $Msg->getLogin(),
                         "securityDomain" => $Msg->getBusinessAccount(),
                         "blocked" => $Msg->getBlocked(),
-                        "name1" => $Msg->getName1(),
-                        "name2" => $Msg->getName2(),
-                        "name3" => $Msg->getName3(),
-                        "nickname" => $Msg->getNickname(),
+                        "firstName" => $Msg->getName1(),
+                        "middleName" => $Msg->getName2(),
+                        "lastName" => $Msg->getName3(),
+                        "nickName" => $Msg->getNickname(),
                         "email" => $Msg->getEmail() ?: '',
                         "lastLoginIp" => $Msg->getLastLoginIp(),
                         "lastLoginAt" => $Msg->getLastLoginTime(),
@@ -323,10 +326,11 @@ class UserFacade implements Interfaces\IUserInterface
             return  new SuccessResponse([
                 "login" => $login,
                 "email" => $response->getEmail(),
-                "nickname" => $response->getNickname(),
+                "nickName" => $response->getNickname(),
                 "firstName" => $response->getName1(),
                 "middleName" => $response->getName2(),
                 "lastName" => $response->getName3(),
+                "blocked" => $response->getBlocked()
             ]);
         }
         catch (\Exception $e)
@@ -380,17 +384,20 @@ class UserFacade implements Interfaces\IUserInterface
     */
     public function setUserProfile($login, array $params)
     {
-        $allowedKeys = ["nickname", "firstName", "lastName", "middleName" , "image"];
+        $allowedKeys = ["nickName", "firstName", "lastName", "middleName" , "image"];
         $map = Models\User::getMapForSave();
         $ar = [];
         foreach($allowedKeys as $key)
         {
-            if(isset($params[$key]))
+            if(key_exists($key,$params))
             {
+
                 $saveKey = $map[$key];
                 $ar[$saveKey] = $params[$key];
             }
         }
+
+
         if(count($ar) > 0)
         {
             $setUser = Vipadmin\save_user_profile::fromArray(array_merge([

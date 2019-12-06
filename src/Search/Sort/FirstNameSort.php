@@ -11,7 +11,7 @@ use  EncryptServer\Protocol\Vipadmin;
 /**
  * @brief Sort user by first name
  */
-class FirstNameSort
+class FirstNameSort extends  AbstractSort
 {
     /**
      * @param Vipadmin\get_user_list $cmd

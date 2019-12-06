@@ -41,12 +41,12 @@ abstract class AbstractSort
 
     /**
      * @param Vipadmin\get_user_list $cmd
-     * @param $asc
+     * @param $asc boolean
      *
      * @brief Sort in order
      */
     public function add(Vipadmin\get_user_list $cmd, $asc)
     {
-        if(!$asc) $cmd->setSortDesc(true);
+            $cmd->setSortDesc(!$asc);
     }
 }

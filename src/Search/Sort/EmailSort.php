@@ -11,7 +11,7 @@ use  EncryptServer\Protocol\Vipadmin;
 /**
  * @brief Sort user by Email
  */
-class EmailSort
+class EmailSort extends  AbstractSort
 {
     /**
      * @param Vipadmin\get_user_list $cmd

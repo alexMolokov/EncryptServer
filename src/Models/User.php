@@ -20,7 +20,7 @@ class User
     /**
      * User NickName
      */
-    private $nickname = "";
+    private $nickName = "";
     private $firstName = "";
     private $lastName = "";
     private $middleName = "";
@@ -49,12 +49,13 @@ class User
         "id" => "id",
         "login" => "login",
         "email" => "email",
-        "nickname" => "nickname",
-        "name1" => "firstName",
-        "name2" => "lastName",
-        "name3" => "middleName",
+        "nickName" => "nickName",
+        "firstName" => "firstName",
+        "lastName" => "lastName",
+        "middleName" => "middleName",
         "contactList" => "contactList",
         "comments" => "comments",
+        "password" => "password",
         "tags" => "tags",
         "blocked" => "blocked",
         "canChangePassword" => "canChangePassword",
@@ -140,7 +141,7 @@ class User
      */
     public function getNickname()
     {
-        return $this->nickname;
+        return $this->nickName;
     }
 
     /**
